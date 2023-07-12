@@ -1,0 +1,49 @@
+#write a program to scrap flipkart website with any product mentioned in input given by user,
+#scrap the products review and ratings
+ 
+#importing libraries    
+
+import requests 
+from bs4 import BeautifulSoup       
+
+#getting the input from user
+
+product = input("Enter the product you want to search: ")
+url = "https://www.flipkart.com/search?q="+product
+response = requests.get(url)
+soup = BeautifulSoup(response.text,"html.parser")
+product = soup.find("div",class_="_4rR01T")
+#print(product.text)
+
+#get the ratings and reviews
+
+ratings = soup.find_all("div",class_="_3LWZlK")
+
+reviews = soup.find_all("p",class_="_2-N8zT")                      #made few changes here "p" & class value
+
+#print(ratings)
+
+#printing the ratings and append it to a list and print
+
+rating_list = []
+
+for i in ratings:
+    for r in reviews:
+        #print(i.text,r.text)
+        rating_list.append(i.text)
+        rating_list.append(r.text)
+    
+print(rating_list)
+print(len(rating_list))
+
+#check for the available Bank offer and print these offer in a list
+
+offer = soup.find_all("div",class_="_3Ay6Sb")
+
+offer_list = []
+
+for i in offer:
+    offer_list.append(i.text)
+
+print(offer_list)
+print(len(offer_list))
